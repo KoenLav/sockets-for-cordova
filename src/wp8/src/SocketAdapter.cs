@@ -61,9 +61,9 @@ namespace Blocshop.ScoketsForCordova
             };
 
             // Set the timeout for synchronous receive methods to
-            tcpSocket.ReceiveTimeout = timeout;
+            this.socket.ReceiveTimeout = timeout;
             // Set the timeout for synchronous send methods
-            tcpSocket.SendTimeout = timeout;
+            this.socket.SendTimeout = timeout;
 
             await this.socket.ConnectTaskAsync(connectSocketAsyncEventArgs);
 
