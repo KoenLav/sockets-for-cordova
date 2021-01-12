@@ -40,9 +40,12 @@ namespace Blocshop.ScoketsForCordova
 
         public void open(string parameters)
         {
-            string socketKey = JsonHelper.Deserialize<string[]>(parameters)[0];
-            string host = JsonHelper.Deserialize<string[]>(parameters)[1];
-            int port = int.Parse(JsonHelper.Deserialize<string[]>(parameters)[2]);
+            string[] parsedParameters = JsonHelper.Deserialize<string[]>(parameters);
+
+            string socketKey = parsedParameters[0];
+            string host = parsedParameters[1];
+            int port = int.Parse(parsedParameters[2]);
+            int timeout = int.Parse(parsedParameters[3]);
 
             ISocketAdapter socketAdapter = new SocketAdapter();
             socketAdapter.CloseEventHandler = (hasError) => this.CloseEventHandler(socketKey, hasError);
@@ -51,7 +54,7 @@ namespace Blocshop.ScoketsForCordova
 
             try
             {
-                socketAdapter.Connect(host, port).Wait();
+                socketAdapter.Connect(host, port, timeout).Wait();
 
                 this.socketStorage.Add(socketKey, socketAdapter);
 
@@ -69,8 +72,10 @@ namespace Blocshop.ScoketsForCordova
 
         public void write(string parameters)
         {
-            string socketKey = JsonHelper.Deserialize<string[]>(parameters)[0];
-            string dataJsonArray = JsonHelper.Deserialize<string[]>(parameters)[1];
+            string[] parsedParameters = JsonHelper.Deserialize<string[]>(parameters);
+
+            string socketKey = parsedParameters[0];
+            string dataJsonArray = parsedParameters[1];
             byte[] data = JsonHelper.Deserialize<byte[]>(dataJsonArray);
 
             ISocketAdapter socket = this.socketStorage.Get(socketKey);

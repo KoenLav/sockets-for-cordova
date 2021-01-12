@@ -29,7 +29,7 @@
     NSTimer *writeTimer;
 }
 
-- (void)open:(NSString *)host port:(NSNumber*)port;
+- (void)open:(NSString *)host port:(NSNumber*)port timeout:(NSNumber*)timeout;
 - (void)write:(NSArray *)dataArray;
 - (void)shutdownWrite;
 - (void)close;

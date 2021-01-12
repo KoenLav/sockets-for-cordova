@@ -40,12 +40,12 @@ function Socket() {
     this.socketKey = guid();
 }
 
-Socket.prototype.open = function (host, port, success, error) {
+Socket.prototype.open = function (host, port, success, error, timeout = 7500) {
 
     success = success || function () {
-        };
+    };
     error = error || function () {
-        };
+    };
 
     if (!this._ensureState(Socket.State.CLOSED, error)) {
         return;
@@ -96,16 +96,17 @@ Socket.prototype.open = function (host, port, success, error) {
         [
             this.socketKey,
             host,
-            port
+            port,
+            timeout
         ]);
 };
 
 Socket.prototype.write = function (data, success, error) {
 
     success = success || function () {
-        };
+    };
     error = error || function () {
-        };
+    };
 
     if (!this._ensureState(Socket.State.OPENED, error)) {
         return;
@@ -129,9 +130,9 @@ Socket.prototype.write = function (data, success, error) {
 Socket.prototype.shutdownWrite = function (success, error) {
 
     success = success || function () {
-        };
+    };
     error = error || function () {
-        };
+    };
 
     if (!this._ensureState(Socket.State.OPENED, error)) {
         return;
@@ -148,9 +149,9 @@ Socket.prototype.shutdownWrite = function (success, error) {
 Socket.prototype.close = function (success, error) {
 
     success = success || function () {
-        };
+    };
     error = error || function () {
-        };
+    };
 
     if (!this._ensureState(Socket.State.OPENED, error)) {
         return;
@@ -167,11 +168,11 @@ Socket.prototype.close = function (success, error) {
 };
 
 Object.defineProperty(Socket.prototype, "state", {
-    get          : function () {
+    get: function () {
         return this._state;
     },
-    enumerable   : true,
-    configurable : true
+    enumerable: true,
+    configurable: true
 });
 
 Socket.prototype._ensureState = function (requiredState, errorCallback) {

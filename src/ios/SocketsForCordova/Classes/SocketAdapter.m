@@ -34,17 +34,16 @@ BOOL wasOpenned = FALSE;
 
 int const WRITE_BUFFER_SIZE = 10 * 1024;
 
-int openTimeoutSeconds = 5.0;
 int writeTimeoutSeconds = 5.0;
 
 @implementation SocketAdapter
 
-- (void)open:(NSString *)host port:(NSNumber*)port {
+- (void)open:(NSString *)host port:(NSNumber*)port timeout:(NSNumber*)timeout {
 
     CFReadStreamRef readStream2;
     CFWriteStreamRef writeStream2;
 
-    NSLog(@"[NATIVE] Setting up connection to %@ : %@", host, [port stringValue]);
+    NSLog(@"[NATIVE] Setting up connection to %@ : %@, with timeout of %@", host, [port stringValue], [timeout stringValue]);
 
     if (![self isIp:host]) {
         host = [self resolveIp:host];
@@ -65,7 +64,7 @@ int writeTimeoutSeconds = 5.0;
     [inputStream1 setDelegate:self];
     [inputStream1 open];
 
-    NSTimer *timer = [NSTimer timerWithTimeInterval:openTimeoutSeconds target:self selector:@selector(onOpenTimeout:) userInfo:nil repeats:NO];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:timeout target:self selector:@selector(onOpenTimeout:) userInfo:nil repeats:NO];
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     openTimer = timer;
 
@@ -76,7 +75,7 @@ int writeTimeoutSeconds = 5.0;
 }
 
 -(void)onOpenTimeout:(NSTimer *)timer {
-    NSLog(@"[NATIVE] Open timeout: %d", openTimeoutSeconds);
+    NSLog(@"[NATIVE] Open timeout");
     //self.errorEventHandler(@"Socket open timeout", @"openTimeout");
     self.openErrorEventHandler(@"Socket open timeout", 0);
     openTimer = nil;
