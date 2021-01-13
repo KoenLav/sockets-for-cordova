@@ -47,13 +47,13 @@ public class SocketAdapterImpl implements SocketAdapter {
     }
 
     @Override
-    public void open(final String host, final int port) {
+    public void open(final String host, final int port, final int timeout) {
         this.executor.submit(new Runnable() {
             @Override
             public void run() {
                 try {
-                    socket.setSoTimeout(5000);
-					socket.connect(new InetSocketAddress(host, port), 5000);
+                    socket.setSoTimeout(timeout);
+					socket.connect(new InetSocketAddress(host, port), timeout);
 					invokeOpenEventHandler();
 					submitReadTask();
 				} catch (IOException e) {

@@ -27,7 +27,7 @@ namespace Blocshop.ScoketsForCordova
 {
     public interface ISocketAdapter
     {
-        Task Connect(String host, int port);
+        Task Connect(String host, int port, int timeout);
         Task Write(byte[] data);
         void ShutdownWrite();
         void Close();
@@ -53,12 +53,17 @@ namespace Blocshop.ScoketsForCordova
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
-        public async Task Connect(string host, int port)
+        public async Task Connect(string host, int port, int timeout)
         {
             var connectSocketAsyncEventArgs = new SocketAsyncEventArgs
             {
                 RemoteEndPoint = new DnsEndPoint(host, port)
             };
+
+            // Set the timeout for synchronous receive methods to
+            this.socket.ReceiveTimeout = timeout;
+            // Set the timeout for synchronous send methods
+            this.socket.SendTimeout = timeout;
 
             await this.socket.ConnectTaskAsync(connectSocketAsyncEventArgs);
 
