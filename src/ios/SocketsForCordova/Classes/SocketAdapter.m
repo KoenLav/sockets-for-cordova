@@ -34,7 +34,7 @@ BOOL wasOpenned = FALSE;
 
 int const WRITE_BUFFER_SIZE = 10 * 1024;
 
-int writeTimeoutSeconds = 5.0;
+int writeTimeoutSeconds = 75.0;
 
 @implementation SocketAdapter
 
