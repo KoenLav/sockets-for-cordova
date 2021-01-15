@@ -34,7 +34,8 @@ BOOL wasOpenned = FALSE;
 
 int const WRITE_BUFFER_SIZE = 10 * 1024;
 
-int writeTimeoutSeconds = 5.0;
+int openTimeoutSeconds = 10.0;
+int writeTimeoutSeconds = 75.0;
 
 @implementation SocketAdapter
 
@@ -64,9 +65,11 @@ int writeTimeoutSeconds = 5.0;
     [inputStream1 setDelegate:self];
     [inputStream1 open];
 
-    NSTimer *timer = [NSTimer timerWithTimeInterval:timeout target:self selector:@selector(onOpenTimeout:) userInfo:nil repeats:NO];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:openTimeoutSeconds target:self selector:@selector(onOpenTimeout:) userInfo:nil repeats:NO];
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     openTimer = timer;
+
+    writeTimeoutSeconds = timeout / 1000;
 
     outputStream1 = (__bridge NSOutputStream *)writeStream2;
     [outputStream1 open];
