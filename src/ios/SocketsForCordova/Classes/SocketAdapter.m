@@ -268,8 +268,8 @@ int writeTimeoutSeconds = 75.0;
 }
 
 - (void)close {
-    self.closeEventHandler(FALSE);
     [self closeStreams];
+    self.closeEventHandler(FALSE);
 }
 
 - (void)closeStreams {
