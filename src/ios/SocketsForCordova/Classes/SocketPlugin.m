@@ -49,7 +49,7 @@
         [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 
         [self->socketAdapters setObject:socketAdapter forKey:socketKey];
-        [self->socketAdaptersPorts setObject:socketKey forKey:host+port];
+        [self->socketAdaptersPorts setObject:socketKey forKey:[host stringByAppendingString:port]];
 
         socketAdapter = nil;
     };
