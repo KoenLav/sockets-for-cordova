@@ -73,7 +73,7 @@ public class SocketPlugin extends CordovaPlugin {
         socketAdapter.setOpenErrorEventHandler(new OpenErrorEventHandler(callbackContext));
         socketAdapter.setOpenEventHandler(new OpenEventHandler(socketKey, socketAdapter, callbackContext));
 
-        String portString = String.valueOf(port);
+        String portString = host + String.valueOf(port);
         if (this.socketAdaptersPorts.containsKey(portString)) {
             String existsSocketKey = this.socketAdaptersPorts.get(portString);
             SocketAdapter existsSocket = this.getSocketAdapter(existsSocketKey);
