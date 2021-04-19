@@ -27,6 +27,7 @@
     NSString *socketKey = [command.arguments objectAtIndex:0];
     NSString *host = [command.arguments objectAtIndex:1];
     NSNumber *port = [command.arguments objectAtIndex:2];
+    NSNumber *timeout = [command.arguments objectAtIndex:2];
 
     NSLog(@"[NATIVE] OPEN socket for port: %@", port);
 
@@ -97,7 +98,7 @@
 
     [self.commandDelegate runInBackground:^{
         @try {
-            [socketAdapter open:host port:port];
+            [socketAdapter open:host port:port timeout:timeout];
         }
         @catch (NSException *e) {
             [self.commandDelegate

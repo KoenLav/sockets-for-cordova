@@ -69,7 +69,7 @@ int writeTimeoutSeconds = 75.0;
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     openTimer = timer;
 
-    writeTimeoutSeconds = timeout / 1000;
+    writeTimeoutSeconds = timeout.floatValue / 1000;
 
     outputStream1 = (__bridge NSOutputStream *)writeStream2;
     [outputStream1 open];
