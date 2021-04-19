@@ -39,7 +39,7 @@
         self->socketAdaptersPorts = [[NSMutableDictionary alloc] init];
     }
 
-    NSString *existsPortSocketKey = [self->socketAdaptersPorts objectForKey:port];
+    NSString *existsPortSocketKey = [self->socketAdaptersPorts objectForKey:[host stringByAppendingString:port.stringValue]];
     if(existsPortSocketKey != nil){
         NSLog(@"[NATIVE] OLD socket exists for port: %@", port);
         [self closeSocketInstance:existsPortSocketKey];
@@ -50,7 +50,7 @@
         [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 
         [self->socketAdapters setObject:socketAdapter forKey:socketKey];
-        [self->socketAdaptersPorts setObject:socketKey forKey:port];
+        [self->socketAdaptersPorts setObject:socketKey forKey:[host stringByAppendingString:port.stringValue]];
 
         socketAdapter = nil;
     };
