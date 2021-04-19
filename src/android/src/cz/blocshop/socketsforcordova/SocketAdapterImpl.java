@@ -53,7 +53,7 @@ public class SocketAdapterImpl implements SocketAdapter {
             public void run() {
                 try {
                     socket.setSoTimeout(timeout);
-					socket.connect(new InetSocketAddress(host, port), timeout);
+					socket.connect(new InetSocketAddress(host, port), 5000);
 					invokeOpenEventHandler();
 					submitReadTask();
 				} catch (IOException e) {
