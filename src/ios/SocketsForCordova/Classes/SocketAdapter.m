@@ -138,15 +138,19 @@ int writeTimeoutSeconds = 75.0;
 }
 
 - (void)closeInputStream {
-    [inputStream1 close];
-    [inputStream1 removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [inputStream1 setDelegate:nil];
-    inputStream1 = nil;
+    if (inputStream1 != nil) {
+        [inputStream1 close];
+        [inputStream1 removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [inputStream1 setDelegate:nil];
+        inputStream1 = nil;
+    }
 }
 
 - (void)closeOutputStream {
-    [outputStream1 close];
-    outputStream1 = nil;
+    if (outputStream1 != nil) {
+        [outputStream1 close];
+        outputStream1 = nil;
+    }
 }
 
 -(int) socknumForStream: (NSStream *)stream
