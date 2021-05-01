@@ -28,6 +28,7 @@
     NSString *host = [command.arguments objectAtIndex:1];
     NSNumber *port = [command.arguments objectAtIndex:2];
     NSNumber *timeout = [command.arguments objectAtIndex:3];
+    NSString *destination = [host stringByAppendingString:port.stringValue];
 
     NSLog(@"[NATIVE] OPEN socket for port: %@", port);
 
@@ -39,7 +40,8 @@
         self->socketAdaptersPorts = [[NSMutableDictionary alloc] init];
     }
 
-    NSString *existsPortSocketKey = [self->socketAdaptersPorts objectForKey:[host stringByAppendingString:port.stringValue]];
+    NSString *existsPortSocketKey = [self->socketAdaptersPorts objectForKey:destination];
+
     if(existsPortSocketKey != nil){
         NSLog(@"[NATIVE] OLD socket exists for port: %@", port);
         [self closeSocketInstance:existsPortSocketKey];
@@ -50,7 +52,7 @@
         [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 
         [self->socketAdapters setObject:socketAdapter forKey:socketKey];
-        [self->socketAdaptersPorts setObject:socketKey forKey:[host stringByAppendingString:port.stringValue]];
+        [self->socketAdaptersPorts setObject:socketKey forKey:destination];
 
         socketAdapter = nil;
     };

@@ -67,16 +67,19 @@ public class SocketPlugin extends CordovaPlugin {
         Log.d("SocketPlugin", "Open socket plugin");
 
         SocketAdapter socketAdapter = new SocketAdapterImpl();
+
         socketAdapter.setCloseEventHandler(new CloseEventHandler(socketKey));
         socketAdapter.setDataConsumer(new DataConsumer(socketKey));
         socketAdapter.setErrorEventHandler(new ErrorEventHandler(socketKey));
         socketAdapter.setOpenErrorEventHandler(new OpenErrorEventHandler(callbackContext));
         socketAdapter.setOpenEventHandler(new OpenEventHandler(socketKey, socketAdapter, callbackContext));
 
-        String portString = String.valueOf(port);
-        if (this.socketAdaptersPorts.containsKey(portString)) {
-            String existsSocketKey = this.socketAdaptersPorts.get(portString);
+        String destination = host + String.valueOf(port);
+
+        if (this.socketAdaptersPorts.containsKey(destination)) {
+            String existsSocketKey = this.socketAdaptersPorts.get(destination);
             SocketAdapter existsSocket = this.getSocketAdapter(existsSocketKey);
+
             try {
                 if (existsSocket != null) {
                     existsSocket.close();
@@ -90,7 +93,7 @@ public class SocketPlugin extends CordovaPlugin {
         }
 
         socketAdapters.put(socketKey, socketAdapter);
-        socketAdaptersPorts.put(portString, socketKey);
+        socketAdaptersPorts.put(destination, socketKey);
 
         socketAdapter.open(host, port, timeout);
     }
@@ -100,6 +103,7 @@ public class SocketPlugin extends CordovaPlugin {
         JSONArray data = args.getJSONArray(1);
 
         byte[] dataBuffer = new byte[data.length()];
+        
         for (int i = 0; i < dataBuffer.length; i++) {
             dataBuffer[i] = (byte) data.getInt(i);
         }
@@ -147,11 +151,11 @@ public class SocketPlugin extends CordovaPlugin {
     }
 
     private void setOptions(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
-
         String socketKey = args.getString(0);
         JSONObject optionsJSON = args.getJSONObject(1);
 
         SocketAdapter socket = this.getSocketAdapter(socketKey);
+
         if (socket != null) {
             SocketAdapterOptions options = new SocketAdapterOptions();
             options.setKeepAlive(getBooleanPropertyFromJSON(optionsJSON, "keepAlive"));
@@ -184,6 +188,7 @@ public class SocketPlugin extends CordovaPlugin {
             Log.d("SocketPlugin", "Adapter not exists");
             return null;
         }
+
         return this.socketAdapters.get(socketKey);
     }
 
