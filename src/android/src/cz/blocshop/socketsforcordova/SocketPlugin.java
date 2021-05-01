@@ -63,6 +63,7 @@ public class SocketPlugin extends CordovaPlugin {
         String host = args.getString(1);
         int port = args.getInt(2);
         int timeout = args.getInt(3);
+        String destination = host + String.valueOf(port);
 
         Log.d("SocketPlugin", "Open socket plugin");
 
@@ -73,8 +74,6 @@ public class SocketPlugin extends CordovaPlugin {
         socketAdapter.setErrorEventHandler(new ErrorEventHandler(socketKey));
         socketAdapter.setOpenErrorEventHandler(new OpenErrorEventHandler(callbackContext));
         socketAdapter.setOpenEventHandler(new OpenEventHandler(socketKey, socketAdapter, callbackContext));
-
-        String destination = host + String.valueOf(port);
 
         if (this.socketAdaptersPorts.containsKey(destination)) {
             String existsSocketKey = this.socketAdaptersPorts.get(destination);

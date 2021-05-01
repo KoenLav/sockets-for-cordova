@@ -30,7 +30,7 @@
     NSNumber *timeout = [command.arguments objectAtIndex:3];
     NSString *destination = [host stringByAppendingString:port.stringValue];
 
-    NSLog(@"[NATIVE] OPEN socket for port: %@", port);
+    NSLog(@"[NATIVE] OPEN socket for destination: %@", destination);
 
     if (socketAdapters == nil) {
         self->socketAdapters = [[NSMutableDictionary alloc] init];
@@ -43,8 +43,12 @@
     NSString *existsPortSocketKey = [self->socketAdaptersPorts objectForKey:destination];
 
     if(existsPortSocketKey != nil){
-        NSLog(@"[NATIVE] OLD socket exists for port: %@", port);
-        [self closeSocketInstance:existsPortSocketKey];
+        @try {
+            [self closeSocketInstance:existsPortSocketKey];
+            NSLog(@"[NATIVE] OLD socket exists for destination, closing: %@", destination);
+        @catch (NSException *e) {
+            NSLog(@"[NATIVE] OLD socket does not exist for destination: %@", destination);
+        }
     }
 
     __block SocketAdapter* socketAdapter = [[SocketAdapter alloc] init];
