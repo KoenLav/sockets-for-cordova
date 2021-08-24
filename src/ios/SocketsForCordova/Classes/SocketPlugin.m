@@ -46,6 +46,7 @@
         @try {
             [self closeSocketInstance:existsPortSocketKey];
             NSLog(@"[NATIVE] OLD socket exists for destination, closing: %@", destination);
+        }
         @catch (NSException *e) {
             NSLog(@"[NATIVE] OLD socket does not exist for destination: %@", destination);
         }
