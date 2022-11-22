@@ -102,20 +102,17 @@ public class SocketPlugin extends CordovaPlugin {
         JSONArray data = args.getJSONArray(1);
 
         byte[] dataBuffer = new byte[data.length()];
-        
+
         for (int i = 0; i < dataBuffer.length; i++) {
             dataBuffer[i] = (byte) data.getInt(i);
         }
 
         SocketAdapter socket = this.getSocketAdapter(socketKey);
 
-        try {
-            if (socket != null) {
-                socket.write(dataBuffer);
-            }
+        if (socket != null) {
+            socket.write(dataBuffer, callbackContext);
+        } else {
             callbackContext.success();
-        } catch (IOException e) {
-            callbackContext.error(e.toString());
         }
     }
 

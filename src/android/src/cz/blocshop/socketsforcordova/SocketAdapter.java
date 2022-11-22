@@ -17,13 +17,15 @@
 
 package cz.blocshop.socketsforcordova;
 
+import org.apache.cordova.CallbackContext;
+
 import java.io.IOException;
 import java.net.SocketException;
 
 
 public interface SocketAdapter {
 	public void open(String host, int port, int timeout);
-	public void write(byte[] data) throws IOException;
+	public void write(byte[] data, CallbackContext callbackContext);
 	public void shutdownWrite() throws IOException;
 	public void close() throws IOException;	
 	public void setOptions(SocketAdapterOptions options) throws SocketException;

@@ -17,6 +17,8 @@
 
 package cz.blocshop.socketsforcordova;
 
+import org.apache.cordova.CallbackContext;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -65,8 +67,16 @@ public class SocketAdapterImpl implements SocketAdapter {
     }
     
     @Override
-    public void write(byte[] data) throws IOException {
-        this.socket.getOutputStream().write(data);
+    public void write(byte[] data, CallbackContext callbackContext) {
+        new Thread(() -> {
+            try {
+                this.socket.getOutputStream().write(data);
+                callbackContext.success();
+            } catch (IOException e) {
+                e.printStackTrace();
+                callbackContext.error(e.toString());
+            }
+        }).start();
     }
 
     @Override
@@ -105,7 +115,7 @@ public class SocketAdapterImpl implements SocketAdapter {
         }
     }
     
-	@Override
+    @Override
 	public void setOpenEventHandler(Consumer<Void> openEventHandler) {
 		this.openEventHandler = openEventHandler;
 	}
