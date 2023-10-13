@@ -243,6 +243,10 @@ int writeTimeoutSeconds = 75.0;
 }
 
 - (void)write:(NSArray *)dataArray {
+    if (dataArray.count <= 0) {
+        return;
+    }
+
     int numberOfBatches = ceil((float)dataArray.count / (float)WRITE_BUFFER_SIZE);
     for (int i = 0; i < (numberOfBatches - 1); i++) {
         [self writeSubarray:dataArray offset:i * WRITE_BUFFER_SIZE length:WRITE_BUFFER_SIZE];
@@ -266,7 +270,7 @@ int writeTimeoutSeconds = 75.0;
     if (bytesWritten == -1) {
         @throw [NSException exceptionWithName:@"SocketException" reason:[outputStream1.streamError localizedDescription] userInfo:nil];
     }
-    if (bytesWritten != length) {
+    if (bytesWritten < length) {
         [self writeSubarray:dataArray offset:(offset + bytesWritten) length:(length - bytesWritten)];
     }
 }
