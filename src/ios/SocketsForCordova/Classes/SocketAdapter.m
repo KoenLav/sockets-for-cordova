@@ -270,8 +270,34 @@ int writeTimeoutSeconds = 75.0;
     if (bytesWritten == -1) {
         @throw [NSException exceptionWithName:@"SocketException" reason:[outputStream1.streamError localizedDescription] userInfo:nil];
     }
+    if (bytesWritten == 0) {
+        @throw [NSException exceptionWithName:@"SocketException" reason:[NSString stringWithFormat:@"No bytes could be written: %@", [self statusToString:outputStream1.streamStatus]] userInfo:nil];
+    }
     if (bytesWritten < length) {
         [self writeSubarray:dataArray offset:(offset + bytesWritten) length:(length - bytesWritten)];
+    }
+}
+
+- (NSString*)statusToString:(NSStreamStatus) status {
+    switch (status) {
+    case NSStreamStatusAtEnd:
+        return @"At end";
+    case NSStreamStatusClosed:
+        return @"Closed";
+    case NSStreamStatusError:
+        return @"Error";
+    case NSStreamStatusNotOpen:
+        return @"Not open";
+    case NSStreamStatusOpen:
+        return @"Open";
+    case NSStreamStatusOpening:
+        return @"Opening";
+    case NSStreamStatusReading:
+        return @"Reading";
+    case NSStreamStatusWriting:
+        return @"Writing";
+    default:
+        return [NSString stringWithFormat:@"Unknown status: %@", status];
     }
 }
 
