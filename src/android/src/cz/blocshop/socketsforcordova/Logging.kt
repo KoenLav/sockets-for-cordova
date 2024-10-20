@@ -14,9 +14,13 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
+package cz.blocshop.socketsforcordova
 
-package cz.blocshop.socketsforcordova;
+import java.util.logging.Level
+import java.util.logging.Logger
 
-public interface Consumer<T> {
-    void accept(T t);
+object Logging {
+    fun error(klass: String, message: String, t: Throwable) {
+        Logger.getLogger(klass).log(Level.SEVERE, message, t)
+    }
 }
